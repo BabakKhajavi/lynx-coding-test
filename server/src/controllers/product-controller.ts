@@ -37,11 +37,11 @@ export const getProducts = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { currency } = req.query;
+    const { currency, size } = req.query;
     const products = await Product.findAll({
       attributes: ['id', 'name', 'price', 'productViewed'],
       order: [['productViewed', 'DESC']],
-      limit: 5,
+      limit: size ? parseInt(size as string) : undefined,
     });
 
     const plainProducts = products.map((product) =>

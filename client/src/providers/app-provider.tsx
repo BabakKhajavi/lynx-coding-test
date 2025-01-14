@@ -1,12 +1,14 @@
 import React, { createContext, useReducer, ReactNode, FC } from 'react';
 import { IProduct } from '../types/interfaces';
+import { Currency, TotalProductSize } from '../types/enums';
 
 interface AppState {
   products: IProduct[];
   productDetail: IProduct | null;
   isLoading: boolean;
   selectedProductId: number | null;
-  currency: 'USD' | 'CAD';
+  currency: Currency;
+  totalProductSize?: TotalProductSize;
 }
 
 const initialState: AppState = {
@@ -14,11 +16,13 @@ const initialState: AppState = {
   productDetail: null,
   isLoading: false,
   selectedProductId: null,
-  currency: 'USD',
+  currency: Currency.USD,
+  totalProductSize: TotalProductSize.Five,
 };
 
 type Action =
-  | { type: 'UPDATE_CURRENCY'; payload: 'USD' | 'CAD' }
+  | { type: 'UPDATE_PAGE_SIZE'; payload: TotalProductSize }
+  | { type: 'UPDATE_CURRENCY'; payload: Currency }
   | { type: 'SET_PRODUCT_ID'; payload: number }
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_PRODUCTS'; payload: IProduct[] }
@@ -28,6 +32,8 @@ type Action =
 
 const appReducer = (state: AppState, action: Action): AppState => {
   switch (action.type) {
+    case 'UPDATE_PAGE_SIZE':
+      return { ...state, totalProductSize: action.payload };
     case 'UPDATE_CURRENCY':
       return { ...state, currency: action.payload };
     case 'SET_PRODUCT_ID':
