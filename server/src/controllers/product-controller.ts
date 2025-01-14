@@ -74,9 +74,7 @@ export const getSingleProduct = async (
   try {
     const { id } = req.params;
     const { currency } = req.query;
-    const product = await Product.findByPk(parseInt(id), {
-      attributes: ['id', 'name', 'price', 'productViewed'],
-    });
+    const product = await Product.findByPk(parseInt(id));
     if (product) {
       product.productViewed = product.productViewed + 1;
       await product.save();
